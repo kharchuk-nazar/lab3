@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div class="container" v-if="!isAddingNewItem">
+            <button class="btn btn-add-new-item" v-on:click="addNewItem" >add new item</button>
+        </div>
+        <div class="container" v-else>
+            <div class="input-palce">
+                <span>Name</span><input class="input input-name" v-on:input="inputNameChange" type="text" v-bind:placeholder="placeholderName" v-bind:value="valueName">
+                <span>Desctiption</span><input class="input input-text" v-on:input="inputTextChange" type="text" v-bind:placeholder="placeholderText" v-bind:value="valueText">
+                <span>Price</span><input class="input input-price" v-on:input="inputPriceChange" type="text" v-bind:placeholder="placeholderPrice" v-bind:value="valuePrice">
+            </div>
+            <div>
+                <button class="btn btn-add" v-on:click="addNote">add</button>
+            </div>
+        </div>
+        <div class="seacrh-block container" v-if="isSearchItems">
+            <input class="input input-search-panel" v-on:input="inputSearchChange" type="text" v-bind:placeholder="placeholderSearch" v-bind:value="valueSearch">
+            <button class="btn btn-search" v-on:click="searchItem">find</button>
+        </div>
+        <div class="list" v-if="!isAddingNewItem">
+            <ul>
+                <li v-for="(myNote, idx) in notes" :key="myNote._id" class="list-item">
+                    <div class="list-content">
+                        <div class="list-title">
+                            <div class="name">
+                                <input class="input-new-item" v-on:input="newInputNameChange(idx, $event)" type="text" v-bind:placeholder="placeholderName" v-if="myNote.isActiveInput" v-bind:value="myNote.name">
+                                <h1 v-else>{{myNote.name}}</h1>
+                            </div>
+                            <div class="price">
+                                <input class="input-new-item" v-on:input="newInputPriceChange(idx, $event)" type="text" v-bind:placeholder="placeholderPrice" v-if="myNote.isActiveInput" v-bind:value="myNote.price">
+                                <span v-else>{{myNote.price}}$</span>
+                            </div>
+                        </div>
+                        <div class="description">
+                            <input class="input-new-item input-new-text" v-on:input="newInputTextChange(idx, $event)" type="text" v-bind:placeholder="placeholderText" v-if="myNote.isActiveInput" v-bind:value="myNote.text">
+                            <span v-else>{{myNote.description}}</span>
+                        </div>
+                    </div>
+                    <div class="settings">
+                        <div class="edit">
+                            <button class="set-btn btn-save" v-on:click="enterEdit(idx)" v-if="myNote.isActiveInput">
+                                save
+                            </button>
+                            <button class="set-btn btn-edit" v-on:click="editItem(idx)" v-else>
+                                edit
+                            </button>
+                        </div>
+                        <div class="delete">
+                            <button class="set-btn btn-delete" v-on:click="deleteItem(idx)">
+                                delete
+                            </button>
+                        </div>
+                    </div>
+                  
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="script.js"></script>
+</body>
+</html>
